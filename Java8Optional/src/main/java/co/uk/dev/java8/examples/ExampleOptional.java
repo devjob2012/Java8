@@ -13,7 +13,12 @@ public class ExampleOptional {
 		ExampleOptional example = new ExampleOptional();
 		// Parameters are passed as an Optional of values.
 		int value = example.sum(Optional.ofNullable(a), Optional.of(b));
-		System.out.println("Hello World! " + value);
+		System.out.println("Addition  " + value);
+		Optional<Integer> c = Optional.ofNullable(100);
+		Optional<Integer> d = Optional.ofNullable(90);
+		value = example.substract(c, d);
+		System.out.println("Substraction " + value);
+
 	}
 
 	/**
@@ -26,4 +31,9 @@ public class ExampleOptional {
 	public int sum(Optional<Integer> a, Optional<Integer> b) {
 		return (a.isPresent() ? a.get() : 0) + (b.isPresent() ? b.get() : 0);
 	}
+
+	public int substract(Optional<Integer> a, Optional<Integer> b) {
+		return (a.isPresent() ? a.get() : 0) - (b.isPresent() ? b.get() : 0);
+	}
+
 }
