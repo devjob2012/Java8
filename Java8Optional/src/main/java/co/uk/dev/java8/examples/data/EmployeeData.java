@@ -6,6 +6,7 @@ import java.util.List;
 import co.uk.dev.java8.examples.model.Employee;
 
 public class EmployeeData {
+
 	public static List<Employee> getEmployees() {
 		List<Employee> lsEmployee = new ArrayList<>();
 		Employee emp1 = new Employee();
