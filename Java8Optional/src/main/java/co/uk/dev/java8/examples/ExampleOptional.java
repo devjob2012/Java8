@@ -21,20 +21,14 @@ public class ExampleOptional {
 
 	}
 
-	/**
-	 * Using Optional
-	 * 
-	 * @param a
-	 * @param b
-	 * @return
-	 */
+
 	public int sum(Optional<Integer> a, Optional<Integer> b) {
 		return (a.isPresent() ? a.get() : 0) + (b.isPresent() ? b.get() : 0);
 	}
 
 	/**
 	 * Substraction
-	 * 
+	 *
 	 * @param a
 	 * @param b
 	 * @return
