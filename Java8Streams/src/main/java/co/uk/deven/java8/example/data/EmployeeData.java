@@ -12,15 +12,9 @@ public class EmployeeData {
 	final Faker faker = new Faker();
 	final RandomService randomService = new RandomService();
 
-	public void populateEmployeeData() {
-
-		faker.company();
-	}
-
 	public static void main(String[] args) {
 		EmployeeData empData = new EmployeeData();
 		empData.getEmployeeData().forEach(System.out::println);
-
 	}
 
 	public List<Employee> getEmployeeData() {
