@@ -13,10 +13,13 @@ public class TreeMapExample {
 	private Map<String, List<NodeExample<String>>> reviewerRevieweeMap = new HashMap<>();
 	private Map<String, NodeExample<String>> childParentMap = new HashMap<>();
 	private Map<String, NodeExample<String>> parentNodeMap = new HashMap<>();
+	private Map<String, NodeExample<String>> revieweeNodeMap = new HashMap<>();
+	private Map<String, NodeExample<String>> reviewerNodeMap = new HashMap<>();
+	private Map<String, NodeExample<String>> nodeMap = new HashMap<>();
 
 	public static void main(String[] args) throws FileNotFoundException {
 		TreeMapExample tmEx = new TreeMapExample();
-		tmEx.useNode();
+		tmEx.createMap();
 
 	}
 
@@ -24,31 +27,24 @@ public class TreeMapExample {
 	private void useNode() throws FileNotFoundException {
 		NodeExample<String> rootNode = new NodeExample<String>("ROOT");
 		createMap();
-		// for (String str : reviewerRevieweeMap.keySet()) {
-		// NodeExample<String> node = new NodeExample<String>(str);
-		// for (String child : reviewerRevieweeMap.get(str)) {
-		// node.addChild(child);
-		// if (childParentMap.get(str) != null) {
-		// NodeExample<String> parent = new
-		// NodeExample<String>(childParentMap.get(str));
-		// node.setParent(parent);
-		// }
-		// }
-		// }
-		for (String key : childParentMap.keySet()) {
-			while (childParentMap.get(key) != null) {
-				key = childParentMap.get(key).getData();
-				System.out.println(" --> " + key);
-				if (childParentMap.get(key) != null) {
-					System.out.println(childParentMap.get(key).getParent());
-				}
+		System.out.println(parentNodeMap.size());
+		for (String reviwerer : parentNodeMap.keySet()) {
 
-				// for (NodeExample<String> node : reviewerRevieweeMap.get(key)) {
-				// System.out.println(" "+node.getData());
-				// }
-				// System.out.println(reviewerRevieweeMap.get(key));
+			if (childParentMap.get(reviwerer) != null) {
+				// System.out.print(reviwerer + " ---> " +
+				// parentNodeMap.get(reviwerer).getParent());
+				// System.out.println("---> " + childParentMap.get(reviwerer).getData());
+				parentNodeMap.get(reviwerer).setParent(childParentMap.get(reviwerer));
+
+				// System.out.print(reviwerer + " ---> " +
+				// parentNodeMap.get(reviwerer).getParent().getData());
+				// System.out.println("---> " + childParentMap.get(reviwerer).getData());
+
+			} else {
+				System.out.println(reviwerer);
+				System.out.println(reviewerRevieweeMap.get(reviwerer).size());
+
 			}
-			System.out.println(key);
 		}
 	}
 
@@ -61,37 +57,30 @@ public class TreeMapExample {
 			String array[] = line.split("reviews");
 			String reviewer = array[0].trim();
 			String reviewee = array[1].trim();
-			NodeExample<String> parentNode = new NodeExample<String>(reviewer);
-			NodeExample<String> node = new NodeExample<String>(reviewee, parentNode);
-			childParentMap.put(reviewee, parentNode);
-			parentNodeMap.put(reviewer, parentNode);
-			List<NodeExample<String>> lsReviewee = null;
-			if (reviewerRevieweeMap.get(reviewer) == null) {
-				lsReviewee = new ArrayList<>();
-				lsReviewee.add(node);
-				reviewerRevieweeMap.put(reviewer, lsReviewee);
-			} else {
-				lsReviewee = reviewerRevieweeMap.get(reviewer);
-				lsReviewee.add(node);
-				reviewerRevieweeMap.put(reviewer, lsReviewee);
-			}
-			if (parentNodeMap.get(reviewee) != null) {
-				System.out.println(" reviewer " + reviewer + " reviewee " + reviewee);
-				parentNodeMap.get(reviewee).setParent(parentNode);
-			}
-		}
-		for (String str : reviewerRevieweeMap.keySet()) {
-			//if (childParentMap.get(str) != null) {
-				System.out.println(str + "------> " + str);
-				for (NodeExample<String> str1 : reviewerRevieweeMap.get(str)) {
-					System.out.println(str1.getData());
-					if (parentNodeMap.get(str1.getData()) != null) {
-						System.out.println(" reviewer " + str1.getData() );
-						//parentNodeMap.get(reviewee).setParent(parentNode);
-					}
-				}
-			//}
+			NodeExample<String> reviewerNode = nodeMap.get(reviewer);
+			NodeExample<String> revieweeNode = nodeMap.get(reviewee);
 
+			if (reviewerNode == null) {
+				if(revieweeNode==null) {
+					reviewerNode = new NodeExample<String>(reviewer);
+					nodeMap.put(reviewer, reviewerNode);					
+				}else {
+					reviewerNode = nodeMap.get(reviewee);
+				}
+			}
+			if (revieweeNode == null) {
+				revieweeNode = new NodeExample<String>(reviewer, reviewerNode);
+				nodeMap.put(reviewee, reviewerNode);
+			} else {
+				revieweeNode.setParent(reviewerNode);
+			}
+
+			
+		}
+		for (String key : nodeMap.keySet()) {
+			System.out.print(key  +"      ----->  ");
+			System.out.println(nodeMap.get(key).getParent());
+			//System.out.println(nodeMap.get(key).isRoot());
 		}
 		return reviewerRevieweeMap;
 	}

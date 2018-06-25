@@ -61,7 +61,7 @@ public class NodeExample<T> {
 		this.parent = null;
 	}
 
-	public void getLeaf(T data) {
-
+	public NodeExample<T> findParent(T data) {
+		return parent;
 	}
 }
