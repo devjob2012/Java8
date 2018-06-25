@@ -13,18 +13,34 @@ import javax.swing.tree.TreeNode;
 
 public class TreeMapExample {
 	public static void main(String[] args) throws FileNotFoundException {
-		// pass the path to the file as a parameter
+		TreeMapExample tmEx = new TreeMapExample();
+		tmEx.useNode();
+	}
+
+	private void useNode() throws FileNotFoundException {
+
+		Map<String, List<String>> map = createMap();
+		Graph gph = new Graph();
+		Node node = new Node();
+		Edge edge = new Edge();
+		for (String str : map.keySet()) {
+			node.name=str;
+		}
+
+	}
+
+	private Map<String, List<String>> createMap() throws FileNotFoundException {
 		File file = new File("/Users/devenrawat/Downloads/reviewers-and-reviewees.txt");
 		Scanner sc = new Scanner(file);
 		Map<String, List<String>> reviewerRevieweeMap = new HashMap<>();
-		TreeNode treeNode = null;
 		while (sc.hasNextLine()) {
 			String line = sc.nextLine();
 			String array[] = line.split("reviews");
 			String reviewer = array[0];
 			String reviewee = array[1];
 			List<String> lsReviewee = null;
-			// System.out.println(line + " reviewer--> " + array[0] + " reviewee -->" + array[1]);
+			// System.out.println(line + " reviewer--> " + array[0] + " reviewee -->" +
+			// array[1]);
 			if (reviewerRevieweeMap.get(reviewer) == null) {
 				lsReviewee = new ArrayList<>();
 				lsReviewee.add(reviewee);
@@ -35,17 +51,24 @@ public class TreeMapExample {
 				reviewerRevieweeMap.put(reviewer, lsReviewee);
 			}
 		}
-		Tree tReview = new Tree("ROOT");
-		for (String string : reviewerRevieweeMap.keySet()) {
-			for (String leaf : reviewerRevieweeMap.get(string)) {
-				tReview.addLeaf(string, leaf);
-			}
-		}
 
-		System.out.println(tReview);
-
+		return reviewerRevieweeMap;
 	}
+}
 
+class Node {
+	public String name;
+	public List<Edge> connections;
+}
+
+class Graph {
+	List<Node> nodes;
+}
+
+class Edge {
+	public Node start;
+	public Node end;
+	public double weight;
 }
 
 class Tree<T> {
