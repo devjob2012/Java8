@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import javax.swing.tree.TreeNode;
-
 public class TreeMapExample {
 	public static void main(String[] args) throws FileNotFoundException {
 		TreeMapExample tmEx = new TreeMapExample();
@@ -20,11 +18,9 @@ public class TreeMapExample {
 	private void useNode() throws FileNotFoundException {
 
 		Map<String, List<String>> map = createMap();
-		Graph gph = new Graph();
-		Node node = new Node();
-		Edge edge = new Edge();
 		for (String str : map.keySet()) {
-			node.name=str;
+			NodeExample<String> parentNode = new NodeExample<String>(str); 
+			NodeExample<String> childNode = new NodeExample<String>(str,parentNode); 
 		}
 
 	}
@@ -32,15 +28,13 @@ public class TreeMapExample {
 	private Map<String, List<String>> createMap() throws FileNotFoundException {
 		File file = new File("/Users/devenrawat/Downloads/reviewers-and-reviewees.txt");
 		Scanner sc = new Scanner(file);
-		Map<String, List<String>> reviewerRevieweeMap = new HashMap<>();
+		Map<String, List<String>> reviewerRevieweeMap = new HashMap<>();		
 		while (sc.hasNextLine()) {
 			String line = sc.nextLine();
 			String array[] = line.split("reviews");
 			String reviewer = array[0];
 			String reviewee = array[1];
 			List<String> lsReviewee = null;
-			// System.out.println(line + " reviewer--> " + array[0] + " reviewee -->" +
-			// array[1]);
 			if (reviewerRevieweeMap.get(reviewer) == null) {
 				lsReviewee = new ArrayList<>();
 				lsReviewee.add(reviewee);
