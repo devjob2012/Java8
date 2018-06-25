@@ -35,20 +35,20 @@ public class TreeMapExample {
 		// }
 		// }
 		// }
-		for (String key : childParentMap.keySet()) {
-			while (childParentMap.get(key) != null) {
-				key = childParentMap.get(key).getData();
+		for (String key : parentNodeMap.keySet()) {
+			while (parentNodeMap.get(key) != null) {
+				key = parentNodeMap.get(key).getData();
 				System.out.println(" --> " + key);
-				if (childParentMap.get(key) != null) {
+				if (parentNodeMap.get(key) != null) {
 					System.out.println(childParentMap.get(key).getParent());
 				}
 
-				// for (NodeExample<String> node : reviewerRevieweeMap.get(key)) {
-				// System.out.println(" "+node.getData());
-				// }
-				// System.out.println(reviewerRevieweeMap.get(key));
+				for (NodeExample<String> node : reviewerRevieweeMap.get(key)) {
+					System.out.println(" " + node.getData());
+				}
+				System.out.println(reviewerRevieweeMap.get(key));
 			}
-			System.out.println(key);
+			// System.out.println(key);
 		}
 	}
 
@@ -76,21 +76,22 @@ public class TreeMapExample {
 				reviewerRevieweeMap.put(reviewer, lsReviewee);
 			}
 			if (parentNodeMap.get(reviewee) != null) {
-				System.out.println(" reviewer " + reviewer + " reviewee " + reviewee);
+				// System.out.println(" reviewer " + reviewer + " reviewee " + reviewee);
 				parentNodeMap.get(reviewee).setParent(parentNode);
 			}
 		}
-		for (String str : reviewerRevieweeMap.keySet()) {
-			//if (childParentMap.get(str) != null) {
-				System.out.println(str + "------> " + str);
-				for (NodeExample<String> str1 : reviewerRevieweeMap.get(str)) {
-					System.out.println(str1.getData());
-					if (parentNodeMap.get(str1.getData()) != null) {
-						System.out.println(" reviewer " + str1.getData() );
-						//parentNodeMap.get(reviewee).setParent(parentNode);
+		for (String reviewer : reviewerRevieweeMap.keySet()) {
+			System.out.println(" reviewer ------> " + reviewer);
+			if (childParentMap.get(reviewer) != null) {
+
+				for (NodeExample<String> reviewee : reviewerRevieweeMap.get(reviewer)) {
+					System.out.println(reviewee.getData());
+					if (childParentMap.get(reviewee.getData()).getData().equals(reviewee)) {
+						System.out.println(" reviewer " + reviewee.getParent());
+						// parentNodeMap.get(reviewee).setParent(parentNode);
 					}
 				}
-			//}
+			}
 
 		}
 		return reviewerRevieweeMap;
