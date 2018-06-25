@@ -14,21 +14,20 @@ public class TreeMapExample {
 		TreeMapExample tmEx = new TreeMapExample();
 		tmEx.useNode();
 	}
-
+//https://stackoverflow.com/questions/19330731/tree-implementation-in-java-root-parents-and-children
 	private void useNode() throws FileNotFoundException {
 
 		Map<String, List<String>> map = createMap();
 		for (String str : map.keySet()) {
-			NodeExample<String> parentNode = new NodeExample<String>(str); 
-			NodeExample<String> childNode = new NodeExample<String>(str,parentNode); 
+			NodeExample<String> parentNode = new NodeExample<String>(str);
+			NodeExample<String> childNode = new NodeExample<String>(str, parentNode);
 		}
-
 	}
 
 	private Map<String, List<String>> createMap() throws FileNotFoundException {
 		File file = new File("/Users/devenrawat/Downloads/reviewers-and-reviewees.txt");
 		Scanner sc = new Scanner(file);
-		Map<String, List<String>> reviewerRevieweeMap = new HashMap<>();		
+		Map<String, List<String>> reviewerRevieweeMap = new HashMap<>();
 		while (sc.hasNextLine()) {
 			String line = sc.nextLine();
 			String array[] = line.split("reviews");
