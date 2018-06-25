@@ -22,8 +22,12 @@ public class NodeExample<T> {
 	}
 
 	public void setParent(NodeExample<T> parent) {
-		parent.addChild(this);
+		// parent.addChild(this);
 		this.parent = parent;
+	}
+
+	public NodeExample<T> getParent() {
+		return this.parent;
 	}
 
 	public void addChild(T data) {
@@ -55,5 +59,9 @@ public class NodeExample<T> {
 
 	public void removeParent() {
 		this.parent = null;
+	}
+
+	public void getLeaf(T data) {
+
 	}
 }

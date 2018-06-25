@@ -10,156 +10,89 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class TreeMapExample {
+	private Map<String, List<NodeExample<String>>> reviewerRevieweeMap = new HashMap<>();
+	private Map<String, NodeExample<String>> childParentMap = new HashMap<>();
+	private Map<String, NodeExample<String>> parentNodeMap = new HashMap<>();
+
 	public static void main(String[] args) throws FileNotFoundException {
 		TreeMapExample tmEx = new TreeMapExample();
 		tmEx.useNode();
+
 	}
 
+	// https://stackoverflow.com/questions/19330731/tree-implementation-in-java-root-parents-and-children
 	private void useNode() throws FileNotFoundException {
+		NodeExample<String> rootNode = new NodeExample<String>("ROOT");
+		createMap();
+		// for (String str : reviewerRevieweeMap.keySet()) {
+		// NodeExample<String> node = new NodeExample<String>(str);
+		// for (String child : reviewerRevieweeMap.get(str)) {
+		// node.addChild(child);
+		// if (childParentMap.get(str) != null) {
+		// NodeExample<String> parent = new
+		// NodeExample<String>(childParentMap.get(str));
+		// node.setParent(parent);
+		// }
+		// }
+		// }
+		for (String key : childParentMap.keySet()) {
+			while (childParentMap.get(key) != null) {
+				key = childParentMap.get(key).getData();
+				System.out.println(" --> " + key);
+				if (childParentMap.get(key) != null) {
+					System.out.println(childParentMap.get(key).getParent());
+				}
 
-		Map<String, List<String>> map = createMap();
-		for (String str : map.keySet()) {
-			NodeExample<String> parentNode = new NodeExample<String>(str); 
-			NodeExample<String> childNode = new NodeExample<String>(str,parentNode); 
+				// for (NodeExample<String> node : reviewerRevieweeMap.get(key)) {
+				// System.out.println(" "+node.getData());
+				// }
+				// System.out.println(reviewerRevieweeMap.get(key));
+			}
+			System.out.println(key);
 		}
-
 	}
 
-	private Map<String, List<String>> createMap() throws FileNotFoundException {
-		File file = new File("/Users/devenrawat/Downloads/reviewers-and-reviewees.txt");
+	private Map<String, List<NodeExample<String>>> createMap() throws FileNotFoundException {
+		File file = new File("/Users/devendra/Downloads/reviewers-and-reviewees.txt");
 		Scanner sc = new Scanner(file);
-		Map<String, List<String>> reviewerRevieweeMap = new HashMap<>();		
+
 		while (sc.hasNextLine()) {
 			String line = sc.nextLine();
 			String array[] = line.split("reviews");
-			String reviewer = array[0];
-			String reviewee = array[1];
-			List<String> lsReviewee = null;
+			String reviewer = array[0].trim();
+			String reviewee = array[1].trim();
+			NodeExample<String> parentNode = new NodeExample<String>(reviewer);
+			NodeExample<String> node = new NodeExample<String>(reviewee, parentNode);
+			childParentMap.put(reviewee, parentNode);
+			parentNodeMap.put(reviewer, parentNode);
+			List<NodeExample<String>> lsReviewee = null;
 			if (reviewerRevieweeMap.get(reviewer) == null) {
 				lsReviewee = new ArrayList<>();
-				lsReviewee.add(reviewee);
+				lsReviewee.add(node);
 				reviewerRevieweeMap.put(reviewer, lsReviewee);
 			} else {
 				lsReviewee = reviewerRevieweeMap.get(reviewer);
-				lsReviewee.add(reviewee);
+				lsReviewee.add(node);
 				reviewerRevieweeMap.put(reviewer, lsReviewee);
 			}
+			if (parentNodeMap.get(reviewee) != null) {
+				System.out.println(" reviewer " + reviewer + " reviewee " + reviewee);
+				parentNodeMap.get(reviewee).setParent(parentNode);
+			}
 		}
+		for (String str : reviewerRevieweeMap.keySet()) {
+			//if (childParentMap.get(str) != null) {
+				System.out.println(str + "------> " + str);
+				for (NodeExample<String> str1 : reviewerRevieweeMap.get(str)) {
+					System.out.println(str1.getData());
+					if (parentNodeMap.get(str1.getData()) != null) {
+						System.out.println(" reviewer " + str1.getData() );
+						//parentNodeMap.get(reviewee).setParent(parentNode);
+					}
+				}
+			//}
 
+		}
 		return reviewerRevieweeMap;
-	}
-}
-
-class Node {
-	public String name;
-	public List<Edge> connections;
-}
-
-class Graph {
-	List<Node> nodes;
-}
-
-class Edge {
-	public Node start;
-	public Node end;
-	public double weight;
-}
-
-class Tree<T> {
-
-	private T head;
-
-	private ArrayList<Tree<T>> leafs = new ArrayList<Tree<T>>();
-
-	private Tree<T> parent = null;
-
-	private HashMap<T, Tree<T>> locate = new HashMap<T, Tree<T>>();
-
-	public Tree(T head) {
-		this.head = head;
-		locate.put(head, this);
-	}
-
-	public void addLeaf(T root, T leaf) {
-		if (locate.containsKey(root)) {
-			locate.get(root).addLeaf(leaf);
-		} else {
-			addLeaf(root).addLeaf(leaf);
-		}
-	}
-
-	public Tree<T> addLeaf(T leaf) {
-		Tree<T> t = new Tree<T>(leaf);
-		leafs.add(t);
-		t.parent = this;
-		t.locate = this.locate;
-		locate.put(leaf, t);
-		return t;
-	}
-
-	public Tree<T> setAsParent(T parentRoot) {
-		Tree<T> t = new Tree<T>(parentRoot);
-		t.leafs.add(this);
-		this.parent = t;
-		t.locate = this.locate;
-		t.locate.put(head, this);
-		t.locate.put(parentRoot, t);
-		return t;
-	}
-
-	public T getHead() {
-		return head;
-	}
-
-	public Tree<T> getTree(T element) {
-		return locate.get(element);
-	}
-
-	public Tree<T> getParent() {
-		return parent;
-	}
-
-	public Collection<T> getSuccessors(T root) {
-		Collection<T> successors = new ArrayList<T>();
-		Tree<T> tree = getTree(root);
-		if (null != tree) {
-			for (Tree<T> leaf : tree.leafs) {
-				successors.add(leaf.head);
-			}
-		}
-		return successors;
-	}
-
-	public Collection<Tree<T>> getSubTrees() {
-		return leafs;
-	}
-
-	public static <T> Collection<T> getSuccessors(T of, Collection<Tree<T>> in) {
-		for (Tree<T> tree : in) {
-			if (tree.locate.containsKey(of)) {
-				return tree.getSuccessors(of);
-			}
-		}
-		return new ArrayList<T>();
-	}
-
-	@Override
-	public String toString() {
-		return printTree(0);
-	}
-
-	private static final int indent = 2;
-
-	private String printTree(int increment) {
-		String s = "";
-		String inc = "";
-		for (int i = 0; i < increment; ++i) {
-			inc = inc + " ";
-		}
-		s = inc + head;
-		for (Tree<T> child : leafs) {
-			s += "\n" + child.printTree(increment + indent);
-		}
-		return s;
 	}
 }
