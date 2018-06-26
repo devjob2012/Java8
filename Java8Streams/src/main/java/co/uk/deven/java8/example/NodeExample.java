@@ -22,7 +22,6 @@ public class NodeExample<T> {
 	}
 
 	public void setParent(NodeExample<T> parent) {
-		// parent.addChild(this);
 		this.parent = parent;
 	}
 
@@ -45,23 +44,7 @@ public class NodeExample<T> {
 		return this.data;
 	}
 
-	public void setData(T data) {
-		this.data = data;
-	}
-
 	public boolean isRoot() {
 		return (this.parent == null);
-	}
-
-	public boolean isLeaf() {
-		return this.children.size() == 0;
-	}
-
-	public void removeParent() {
-		this.parent = null;
-	}
-
-	public NodeExample<T> findParent(T data) {
-		return parent;
 	}
 }
