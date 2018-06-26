@@ -10,39 +10,9 @@ public class ReviewerRevieweeCode {
 	private Map<String, GraphNode<String>> nodeMap = new HashMap<>();
 
 	public static void main(String[] args) throws FileNotFoundException {
-		ReviewerRevieweeCode tmEx = new ReviewerRevieweeCode();
-		tmEx.createMap();
-		tmEx.printGraph();
-	}
-
-	private void printGraph() throws FileNotFoundException {
-		for (String key : nodeMap.keySet()) {
-			if (nodeMap.get(key).isRoot()) {
-				System.out.println(key);
-			}
-			if (nodeMap.get(key).isRoot()) {
-				printChild(key, nodeMap.get(key), 0);
-			}
-		}
-	}
-
-	public String printChild(String key, GraphNode<String> child, int count) {
-		if (nodeMap.get(key).getChildren() != null) {
-			count++;
-			for (GraphNode<String> child1 : nodeMap.get(key).getChildren()) {
-				if (child1.getChildren().size() != 0) {
-					System.out.println(rightPadding("", count) + child1.getData());
-				} else {
-					System.out.println(rightPadding("", count) + "\\-" + child1.getData());
-				}
-				printChild(child1.getData(), child1, count);
-			}
-		}
-		return null;
-	}
-
-	public static String rightPadding(String str, int num) {
-		return String.format("%1$-" + num + "s", str).replace(" ", "|");
+		ReviewerRevieweeCode rrCode = new ReviewerRevieweeCode();
+		rrCode.createMap();
+		rrCode.printGraph();
 	}
 
 	private void createMap() throws FileNotFoundException {
@@ -71,4 +41,35 @@ public class ReviewerRevieweeCode {
 			reviewerNode.addChild(revieweeNode);
 		}
 	}
+
+	private void printGraph() throws FileNotFoundException {
+		for (String key : nodeMap.keySet()) {
+			if (nodeMap.get(key).isRoot()) {
+				System.out.println(key);
+			}
+			if (nodeMap.get(key).isRoot()) {
+				printChild(key, nodeMap.get(key), 0);
+			}
+		}
+	}
+
+	private String printChild(String key, GraphNode<String> child, int count) {
+		if (nodeMap.get(key).getChildren() != null) {
+			count++;
+			for (GraphNode<String> child1 : nodeMap.get(key).getChildren()) {
+				if (child1.getChildren().size() != 0) {
+					System.out.println(rightPadding("", count) + child1.getData());
+				} else {
+					System.out.println(rightPadding("", count) + "\\-" + child1.getData());
+				}
+				printChild(child1.getData(), child1, count);
+			}
+		}
+		return null;
+	}
+
+	private static String rightPadding(String str, int num) {
+		return String.format("%1$-" + num + "s", str).replace(" ", "|");
+	}
+
 }
