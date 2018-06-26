@@ -21,12 +21,12 @@ public class ReviewerRevieweeCode {
 				System.out.println(key);
 			}
 			if (nodeMap.get(key).isRoot()) {
-				printGraph(key, nodeMap.get(key), 0);
+				printChild(key, nodeMap.get(key), 0);
 			}
 		}
 	}
 
-	public String printGraph(String key, GraphNode<String> child, int count) {
+	public String printChild(String key, GraphNode<String> child, int count) {
 		if (nodeMap.get(key).getChildren() != null) {
 			count++;
 			for (GraphNode<String> child1 : nodeMap.get(key).getChildren()) {
@@ -35,7 +35,7 @@ public class ReviewerRevieweeCode {
 				} else {
 					System.out.println(rightPadding("", count) + "\\-" + child1.getData());
 				}
-				printGraph(child1.getData(), child1, count);
+				printChild(child1.getData(), child1, count);
 			}
 		}
 		return null;
