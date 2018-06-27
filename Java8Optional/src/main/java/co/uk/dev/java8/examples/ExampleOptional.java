@@ -7,7 +7,19 @@ import java.util.Optional;
  *
  */
 public class ExampleOptional {
+	final static String stree = null;
+
 	public static void main(String[] args) {
+		System.out.println(stree);
+		Optional<String> str = Optional.empty();
+		String text = null;
+		String defaultText = Optional.ofNullable(text).orElseGet(() -> "Else Get , using Supplier");
+		String defaultText1 = Optional.ofNullable(text).orElse("Else only Hello Wrold");
+		System.out.println("  Value of --> " + defaultText);
+		System.out.println("  Value of --> " + defaultText1);
+		System.out.println("------" + (.1 * 3));
+		str = Optional.of("Hello");
+		System.out.println(str.get());
 		Integer a = null;
 		Integer b = 10;
 		ExampleOptional example = new ExampleOptional();
@@ -20,7 +32,6 @@ public class ExampleOptional {
 		System.out.println("Substraction " + value);
 
 	}
-
 
 	public int sum(Optional<Integer> a, Optional<Integer> b) {
 		return (a.isPresent() ? a.get() : 0) + (b.isPresent() ? b.get() : 0);
